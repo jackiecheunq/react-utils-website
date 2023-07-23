@@ -1,5 +1,5 @@
 import { utils, writeFileXLSX } from "xlsx";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Input from "../Components/Input";
 import { toast } from "react-toastify";
 
@@ -19,8 +19,12 @@ const Xlsx = () => {
     return result;
   };
 
+  const convertedValue = useMemo(() => {
+    return convert(content);
+  }, [content]);
+
   const ouputHandler = () => {
-    const src = convert(content);
+    const src = convertedValue;
     if (src) {
       const workBook = utils.book_new();
       const workSheet = utils.aoa_to_sheet([[], ...src.map((id) => [id])]);
@@ -52,13 +56,23 @@ const Xlsx = () => {
           }}
           value={content}
         />
-        <button className="btn py-4 px-12 block" onClick={ouputHandler}>
+        <button
+          className="btn py-4 px-12 block disabled:cursor-not-allowed disabled:opacity-75"
+          onClick={ouputHandler}
+          disabled={!convertedValue}
+        >
           Submit
         </button>
       </div>
       <div className="flex flex-col justify-center">
-        <h3 className="text-xl font-bold">Result</h3>
-        <p className="min-w-[80%]">{convert(content)?.join(", ")}</p>
+        <h3 className="text-3xl font-bold">Result</h3>
+        <h3 className="text-3xl ">
+          Total Number:{" "}
+          <span className="font-bold text-red-600">
+            {convertedValue?.length || 0}
+          </span>
+        </h3>
+        <p className="min-w-[80%]">{convertedValue?.join(", ")}</p>
       </div>
     </div>
   );
