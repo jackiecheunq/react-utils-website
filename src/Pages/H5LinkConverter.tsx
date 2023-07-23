@@ -41,7 +41,7 @@ const H5LinkConverter = () => {
         .replace(/(?<=\/\/)www/, "m")
         .replace(
           /(?<lang>(zh_HK|zh_TW|en_GB))\/(?<page>[^.]+)\.html(?<other>.*)/,
-          "$<lang>/home/$<page>/$<other>"
+          !isTW ? "$<lang>/home/$<page>/$<other>" : "home/$<page>/$<other>"
         )
         .replace(/(zh_HK|zh_TW|en_GB)/, langFormat);
       if (pathFormat === "relative") {
@@ -49,7 +49,7 @@ const H5LinkConverter = () => {
         src = relativePath ? relativePath[0] : src;
       }
       if (isGU) {
-        src = src.replace(/\/(zh_HK|zh_TW|en_GB)/, "");
+        src = src.replace(/\/(zh_HK|zh_TW)/, "");
       }
     } else {
       src = src
