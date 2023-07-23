@@ -8,6 +8,7 @@ const H5LinkConverter = () => {
   const [content, setContent] = useState("");
   const [pathFormat, setPathFormat] = useState("relative");
   const [langFormat, setLangFormat] = useState("zh_HK");
+  const [lastResult, setLastResult] = useState("");
   const clipboardObj = navigator.clipboard;
 
   const isTW =
@@ -21,34 +22,49 @@ const H5LinkConverter = () => {
 
   const isGU = content.includes("gu-global");
   const isUQ = content.includes("uniqlo");
+  const withPrefix = content.includes("${fileServer}${pcPath}/");
+  const isCPage = content.includes("/c/");
+  const isProductPage = content.includes("product-detail");
 
   const wrongFormat = isHK && isTW;
 
   const convert = (src: string) => {
-    if (!isValidHttpUrl(src)) {
-      return "";
+    if (!withPrefix) {
+      if (!isValidHttpUrl(src)) {
+        return "";
+      }
+      if (!isUQ && !isGU) {
+        return src;
+      }
+      src = src
+        .trim()
+        .replace(/(?<=\/\/)www/, "m")
+        .replace(
+          /(?<lang>(zh_HK|zh_TW|en_GB))\/(?<page>[^.]+)\.html(?<other>.*)/,
+          "$<lang>/home/$<page>/$<other>"
+        )
+        .replace(/(zh_HK|zh_TW|en_GB)/, langFormat);
+      if (pathFormat === "relative") {
+        const relativePath = src.match(/\/(zh_HK|zh_TW|en_GB).+/);
+        src = relativePath ? relativePath[0] : src;
+      }
+      if (isGU) {
+        src = src.replace(/\/(zh_HK|zh_TW|en_GB)/, "");
+      }
+    } else {
+      src = src
+        .replace("${fileServer}${pcPath}", `/${langFormat}/home`)
+        .replace(".html", "");
     }
-    if (!isUQ && !isGU) {
-      return src;
+    if (isCPage) {
+      src = src.replace("/c/", "/c_mobile/");
     }
-    src = src
-      .trim()
-      .replace(/(?<=\/\/)www/, "m")
-      .replace(
-        /(?<lang>(zh_HK|zh_TW|en_GB))\/(?<page>\w+)(?=\.html)/,
-        "$<lang>/home/$<page>"
-      )
-      .replace(/\.html/, "")
-      .replace(/(zh_HK|zh_TW|en_GB)/, langFormat);
-
-    if (pathFormat === "relative") {
-      const relativePath = src.match(/\/(zh_HK|zh_TW|en_GB).+/);
-      src = relativePath ? relativePath[0] : src;
+    if (isProductPage) {
+      src = src.replace(
+        /home\/product-detail\/\?productCode=(?<pid>)/,
+        "product?pid=$<pid>"
+      );
     }
-    if (isGU) {
-      src.replace(/\/(zh_HK|zh_TW|en_GB)/, "");
-    }
-
     return src;
   };
 
@@ -74,6 +90,9 @@ const H5LinkConverter = () => {
     if (isGU) {
       setPathFormat("absolute");
     }
+    if (withPrefix) {
+      setPathFormat("relative");
+    }
   }, [content]);
 
   const outputHandler = () => {
@@ -83,6 +102,7 @@ const H5LinkConverter = () => {
     }
     clipboardObj.writeText(result).then(() => {
       toast.success(`Copy "${result}" Successfully! `);
+      setLastResult(result);
       setContent("");
     });
   };
@@ -121,7 +141,6 @@ const H5LinkConverter = () => {
               />
               <label htmlFor="relative">Relative Path</label>
             </div>
-
             <div>
               <input
                 type="radio"
@@ -130,6 +149,7 @@ const H5LinkConverter = () => {
                 value="absolute"
                 readOnly
                 checked={pathFormat === "absolute"}
+                disabled={withPrefix}
               />
               <label htmlFor="absolute">Absolute Path</label>
             </div>
@@ -185,23 +205,35 @@ const H5LinkConverter = () => {
           </div>
         </div>
 
-        <button
-          className="btn py-4 px-12 block disabled:cursor-not-allowed disabled:opacity-75"
-          onClick={outputHandler}
-          disabled={!convertedValue || wrongFormat}
-        >
-          Copy
-        </button>
+        <div className="flex">
+          <button
+            className="btn py-4 px-12 block disabled:cursor-not-allowed disabled:opacity-75 mr-3"
+            onClick={outputHandler}
+            disabled={!convertedValue || wrongFormat}
+          >
+            Copy
+          </button>
+          <button
+            className="btn py-4 px-12 block disabled:cursor-not-allowed disabled:opacity-75"
+            onClick={setContent.bind(null, "")}
+            disabled={!content}
+          >
+            Clear
+          </button>
+        </div>
       </div>
       <div className="flex flex-col justify-center">
         <h3 className="text-xl font-bold">Result ({pathFormat} path):</h3>
         {pathFormat === "relative" ? (
-          <p>{convertedValue}</p>
+          <p className="text-red-500 font-bold">{convertedValue}</p>
         ) : (
           <Link to={convertedValue} target="_blank" rel="noopener noreferrer">
-            {convertedValue}
+            <span className="text-red-500 font-bold">{convertedValue}</span>
           </Link>
         )}
+        <h3 className="text-xl font-bold">
+          Last Result: <span className="text-blue-500">{lastResult}</span>
+        </h3>
       </div>
     </div>
   );
