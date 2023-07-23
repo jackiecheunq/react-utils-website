@@ -1,6 +1,7 @@
 import { utils, writeFileXLSX } from "xlsx";
 import { useState } from "react";
 import Input from "../Components/Input";
+import { toast } from "react-toastify";
 
 const Xlsx = () => {
   const [title, setTitle] = useState("id");
@@ -26,6 +27,7 @@ const Xlsx = () => {
       utils.book_append_sheet(workBook, workSheet, title || "id");
       writeFileXLSX(workBook, (title || "id") + ".xlsx");
       setContent("");
+      toast.success("Success!");
     }
   };
 
