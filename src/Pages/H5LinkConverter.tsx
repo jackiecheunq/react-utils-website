@@ -1,110 +1,66 @@
-import { useEffect, useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import Input from "../Components/Input";
 import { toast } from "react-toastify";
-import { isValidHttpUrl } from "../utils";
-import { Link } from "react-router-dom";
 
 const H5LinkConverter = () => {
+  const [title, setTitle] = useState("l2_h5");
   const [content, setContent] = useState("");
-  const [pathFormat, setPathFormat] = useState("relative");
+
   const [langFormat, setLangFormat] = useState("zh_HK");
-  const [lastResult, setLastResult] = useState("");
-  const clipboardObj = navigator.clipboard;
-
-  const isTW =
-    content.includes("zh_TW") ||
-    content.includes("/tw") ||
-    content.includes(".tw");
-  const isHK =
-    content.includes("zh_HK") ||
-    content.includes("/hk") ||
-    content.includes(".hk");
-
-  const isGU = content.includes("gu-global");
-  const isUQ = content.includes("uniqlo");
-  const withPrefix = content.includes("${fileServer}${pcPath}/");
-  const isCPage = content.includes("/c/");
-  const isProductPage = content.includes("product-detail");
-
-  const wrongFormat = isHK && isTW;
 
   const convert = (src: string) => {
-    if (!withPrefix) {
-      if (!isValidHttpUrl(src)) {
-        return "";
-      }
-      if (!isUQ && !isGU) {
-        return src;
-      }
+    src = src
+      .replaceAll('"${fileServer}${pcPath}/', '"/home/')
+      .replaceAll('.html"', '"')
+      .replaceAll(".html#", "#")
+      .replaceAll("/home/product-detail.html?productCode=", "/product?pid=")
+      .replaceAll("bundlingArr=", "productCodeList=")
+      .replaceAll("/home/search.html?", "/search?")
+      .replaceAll("/home/c/", "/home/c_mobile/");
+
+    if (langFormat === "zh_HK") {
       src = src
-        .trim()
-        .replace(/(?<=\/\/)www/, "m")
-        .replace(
-          /(?<lang>(zh_HK|zh_TW|en_GB))\/(?<page>[^.]+)\.html(?<other>.*)/,
-          !isTW ? "$<lang>/home/$<page>/$<other>" : "home/$<page>/$<other>"
-        )
-        .replace(/(zh_HK|zh_TW|en_GB)/, langFormat);
-      if (pathFormat === "relative") {
-        const relativePath = src.match(/\/(zh_HK|zh_TW|en_GB).+/);
-        src = relativePath ? relativePath[0] : src;
-      }
-      if (isGU) {
-        src = src.replace(/\/(zh_HK|zh_TW)/, "");
-      }
-    } else {
+        .replaceAll('"/home/', '"/zh_HK/home/')
+        .replaceAll('"/product?', '"/zh_HK/product?')
+        .replaceAll('"/search?', '"/zh_HK/search?')
+        .replaceAll("/en/", "/zh/");
+    } else if (langFormat === "en_GB") {
       src = src
-        .replace("${fileServer}${pcPath}", `/${langFormat}/home`)
-        .replace(".html", "");
+        .replaceAll('"/home/', '"/en_GB/home/')
+        .replaceAll('"/product?', '"/en_GB/product?')
+        .replaceAll('"/search?', '"/en_GB/search?')
+        .replaceAll("/zh/", "/en/");
     }
-    if (isCPage) {
-      src = src.replace("/c/", "/c_mobile/");
-    }
-    if (isProductPage) {
-      src = src.replace(
-        /home\/product-detail\/\?productCode=(?<pid>)/,
-        "product?pid=$<pid>"
-      );
-    }
+
     return src;
   };
 
   const convertedValue = useMemo(() => {
     return convert(content);
-  }, [content, pathFormat, langFormat]);
+  }, [content, langFormat]);
 
-  useEffect(() => {
-    if (wrongFormat) {
-      toast.error(`Wrong Format.`);
-      return;
-    }
-    if (isTW) {
-      setLangFormat("zh_TW");
-    }
-    if (isHK) {
-      if (langFormat === ("zh_HK" || "en_GB")) {
-        setLangFormat(langFormat);
-      } else {
-        setLangFormat("zh_HK");
-      }
-    }
-    if (isGU) {
-      setPathFormat("absolute");
-    }
-    if (withPrefix) {
-      setPathFormat("relative");
-    }
-  }, [content]);
+  const copyHandler = () => {
+    const clipboardObj = navigator.clipboard;
+    clipboardObj.writeText(convertedValue).then(() => {
+      toast.success("Copy Successfully!");
+    });
+  };
 
   const outputHandler = () => {
-    const result = convertedValue;
-    if (!result) {
-      return;
-    }
-    clipboardObj.writeText(result).then(() => {
-      toast.success(`Copy "${result}" Successfully! `);
-      setLastResult(result);
-      setContent("");
-    });
+    const textToSaveAsBlob = new Blob([convertedValue], { type: "text/plain" });
+    const textToSaveAsURL = URL.createObjectURL(textToSaveAsBlob);
+    const link = document.createElement("a");
+    link.href = textToSaveAsURL;
+    link.setAttribute("download", `${title || "l2_h5"}.html`);
+
+    // Append to html link element page
+    document.body.appendChild(link);
+
+    // Start download
+    link.click();
+
+    // Clean up and remove the link
+    link.remove();
   };
   return (
     <div className="w-full bg-slate-100 p-32 flex flex-col justify-center items-center [&>*]:mb-20">
@@ -112,49 +68,22 @@ const H5LinkConverter = () => {
       <div className="flex flex-col items-center [&>*]:mb-3">
         <Input
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setContent(e.target.value)
+            setTitle(e.target.value)
           }
           placeholder="title"
+          value={title}
+        />
+        <textarea
+          rows={4}
+          cols={50}
+          className="input"
+          placeholder="source string"
+          onChange={(event) => {
+            setContent(event.target.value);
+          }}
           value={content}
         />
-
         <div className="flex [&>*]:mr-6">
-          <div
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setPathFormat(event.target.value);
-            }}
-            className="border p-3 border-black"
-          >
-            <legend>
-              Select an <span className="font-bold">Path</span> format:
-            </legend>
-
-            <div>
-              <input
-                type="radio"
-                id="relative"
-                name="pathFormat"
-                value="relative"
-                checked={pathFormat === "relative"}
-                readOnly
-                disabled={isGU}
-              />
-              <label htmlFor="relative">Relative Path</label>
-            </div>
-            <div>
-              <input
-                type="radio"
-                id="absolute"
-                name="pathFormat"
-                value="absolute"
-                readOnly
-                checked={pathFormat === "absolute"}
-                disabled={withPrefix}
-              />
-              <label htmlFor="absolute">Absolute Path</label>
-            </div>
-          </div>
-
           <div
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               setLangFormat(event.target.value);
@@ -173,7 +102,6 @@ const H5LinkConverter = () => {
                 value="zh_HK"
                 checked={langFormat === "zh_HK"}
                 readOnly
-                disabled={isTW}
               />
               <label htmlFor="zh_HK">zh_HK</label>
             </div>
@@ -186,21 +114,8 @@ const H5LinkConverter = () => {
                 value="en_GB"
                 checked={langFormat === "en_GB"}
                 readOnly
-                disabled={isTW || isGU}
               />
               <label htmlFor="en_GB">en_GB</label>
-            </div>
-            <div>
-              <input
-                type="radio"
-                id="zh_TW"
-                name="langFormat"
-                value="zh_TW"
-                readOnly
-                checked={langFormat === "zh_TW"}
-                disabled={isHK}
-              />
-              <label htmlFor="zh_TW">zh_TW</label>
             </div>
           </div>
         </div>
@@ -208,10 +123,17 @@ const H5LinkConverter = () => {
         <div className="flex">
           <button
             className="btn py-4 px-12 block disabled:cursor-not-allowed disabled:opacity-75 mr-3"
-            onClick={outputHandler}
-            disabled={!convertedValue || wrongFormat}
+            onClick={copyHandler}
+            disabled={!content}
           >
             Copy
+          </button>
+          <button
+            className="btn py-4 px-12 block disabled:cursor-not-allowed disabled:opacity-75 mr-3"
+            onClick={outputHandler}
+            disabled={!content}
+          >
+            Output
           </button>
           <button
             className="btn py-4 px-12 block disabled:cursor-not-allowed disabled:opacity-75"
@@ -221,19 +143,6 @@ const H5LinkConverter = () => {
             Clear
           </button>
         </div>
-      </div>
-      <div className="flex flex-col justify-center">
-        <h3 className="text-xl font-bold">Result ({pathFormat} path):</h3>
-        {pathFormat === "relative" ? (
-          <p className="text-red-500 font-bold">{convertedValue}</p>
-        ) : (
-          <Link to={convertedValue} target="_blank" rel="noopener noreferrer">
-            <span className="text-red-500 font-bold">{convertedValue}</span>
-          </Link>
-        )}
-        <h3 className="text-xl font-bold">
-          Last Result: <span className="text-blue-500">{lastResult}</span>
-        </h3>
       </div>
     </div>
   );
