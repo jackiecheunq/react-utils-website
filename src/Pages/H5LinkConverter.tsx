@@ -42,6 +42,7 @@ const H5LinkConverter = () => {
   const copyHandler = () => {
     const clipboardObj = navigator.clipboard;
     clipboardObj.writeText(convertedValue).then(() => {
+      setContent("");
       toast.success("Copy Successfully!");
     });
   };
@@ -61,6 +62,8 @@ const H5LinkConverter = () => {
 
     // Clean up and remove the link
     link.remove();
+    setContent("");
+    toast.success("Ouput Successfully!");
   };
   return (
     <div className="w-full bg-slate-100 p-32 flex flex-col justify-center items-center [&>*]:mb-20">
