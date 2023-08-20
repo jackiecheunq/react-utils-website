@@ -9,14 +9,15 @@ const Xlsx = () => {
 
   const convert = (src: string) => {
     const ids = src.match(/\b\d{6,}\b/g);
-    const result = ids
+    let result = ids
       ?.filter((id) => {
-        return id.length === 6 || (id.length === 9 && id.endsWith("000"));
+        return id.length === 6 || id.length === 9;
       })
       .map((id) => {
         return id.length === 6 ? id + "000" : id;
       });
-    return result;
+
+    return result ? [...new Set(result)] : result;
   };
 
   const convertedValue = useMemo(() => {
