@@ -1,12 +1,12 @@
 import NavBar from "./Components/NavBar";
 import Footer from "./Components/Footer";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import HomePage from "./Pages/HomePage";
 import Xlsx from "./Pages/Xlsx";
 import H5LinkConverter from "./Pages/H5LinkConverter";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { initalizeAnalytics, trackPageView } from "./utils/analytics";
+import { initalizeAnalytics } from "./utils/analytics";
 import { useEffect } from "react";
 
 const link = {
@@ -16,15 +16,9 @@ const link = {
 };
 
 function App() {
-  const location = useLocation();
-
   useEffect(() => {
     initalizeAnalytics();
   }, []);
-
-  useEffect(() => {
-    trackPageView(location.pathname);
-  }, [location]);
 
   return (
     <div className="flex flex-col h-screen px-36 min-w-[128rem]">
