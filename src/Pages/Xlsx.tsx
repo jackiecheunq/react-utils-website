@@ -73,7 +73,7 @@ const Xlsx = () => {
             {convertedValue?.length || 0}
           </span>
         </h3>
-        <p className="min-w-[80%]">{convertedValue?.join(", ")}</p>
+        <p className="min-w-[80%]">{convertedValue?.join(", ") || ""}</p>
       </div>
     </div>
   );
