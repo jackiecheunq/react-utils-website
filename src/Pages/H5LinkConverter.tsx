@@ -9,13 +9,13 @@ const H5LinkConverter = () => {
   const [langFormat, setLangFormat] = useState("zh_HK");
 
   const convert = (src: string) => {
+    const regex = /(?<!https:\/\/www.uniqlo.com.hk\/public\/[^\s]+index)\.html/g
     src = src
       .replaceAll('"${fileServer}${pcPath}/', '"/home/')
-      .replaceAll('.html"', '"')
-      .replaceAll(".html#", "#")
-      .replaceAll("/home/product-detail.html?productCode=", "/product?pid=")
+      .replaceAll(regex, '')
+      .replaceAll("/home/product-detail?productCode=", "/product?pid=")
       .replaceAll("bundlingArr=", "productCodeList=")
-      .replaceAll("/home/search.html?", "/search?")
+      .replaceAll("/home/search?", "/search?")
       .replaceAll("/home/c/", "/home/c_mobile/");
 
     if (langFormat === "zh_HK") {
