@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import Input from "../Components/Input";
-import { toast } from "react-toastify";
+import { copyHandler, outputHandler } from "../utils/converter";
 
 const H5LinkConverter = () => {
   const [title, setTitle] = useState("l2_h5");
@@ -40,32 +40,6 @@ const H5LinkConverter = () => {
     return convert(content);
   }, [content, langFormat]);
 
-  const copyHandler = () => {
-    const clipboardObj = navigator.clipboard;
-    clipboardObj.writeText(convertedValue).then(() => {
-      setContent("");
-      toast.success("Copy Successfully!");
-    });
-  };
-
-  const outputHandler = () => {
-    const textToSaveAsBlob = new Blob([convertedValue], { type: "text/plain" });
-    const textToSaveAsURL = URL.createObjectURL(textToSaveAsBlob);
-    const link = document.createElement("a");
-    link.href = textToSaveAsURL;
-    link.setAttribute("download", `${title || "l2_h5"}.html`);
-
-    // Append to html link element page
-    document.body.appendChild(link);
-
-    // Start download
-    link.click();
-
-    // Clean up and remove the link
-    link.remove();
-    setContent("");
-    toast.success("Ouput Successfully!");
-  };
   return (
     <div className="w-full bg-slate-100 p-32 flex flex-col justify-center items-center [&>*]:mb-20">
       <h1 className="mb-3 font-bold text-4xl">H5LinkConverter</h1>
@@ -127,14 +101,14 @@ const H5LinkConverter = () => {
         <div className="flex">
           <button
             className="btn py-4 px-12 block disabled:cursor-not-allowed disabled:opacity-75 mr-3"
-            onClick={copyHandler}
+            onClick={() => copyHandler(convertedValue,setContent.bind(null, "") )}
             disabled={!content}
           >
             Copy
           </button>
           <button
             className="btn py-4 px-12 block disabled:cursor-not-allowed disabled:opacity-75 mr-3"
-            onClick={outputHandler}
+            onClick={() => outputHandler(convertedValue, title, setContent.bind(null, ""))}
             disabled={!content}
           >
             Output
