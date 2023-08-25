@@ -9,10 +9,11 @@ const H5LinkConverter = () => {
   const [langFormat, setLangFormat] = useState("zh_HK");
 
   const convert = (src: string) => {
-    const regex = /(?<!https:\/\/www.uniqlo.com.hk\/public\/[^\s]+index)\.html/g
+    const relativePathReplacer = '${fileServer}${pcPath}/';
+    const htmlReplacer = /(?<!https:\/\/www.uniqlo.com.hk\/public\/[^\s]+index)\.html/g
     src = src
-      .replaceAll('"${fileServer}${pcPath}/', '"/home/')
-      .replaceAll(regex, '')
+      .replaceAll(relativePathReplacer, '/home/')
+      .replaceAll(htmlReplacer, '')
       .replaceAll("/home/product-detail?productCode=", "/product?pid=")
       .replaceAll("bundlingArr=", "productCodeList=")
       .replaceAll("/home/search?", "/search?")
@@ -20,15 +21,15 @@ const H5LinkConverter = () => {
 
     if (langFormat === "zh_HK") {
       src = src
-        .replaceAll('"/home/', '"/zh_HK/home/')
-        .replaceAll('"/product?', '"/zh_HK/product?')
-        .replaceAll('"/search?', '"/zh_HK/search?')
+        .replaceAll('/home/', '/zh_HK/home/')
+        .replaceAll('/product?', '/zh_HK/product?')
+        .replaceAll('/search?', '/zh_HK/search?')
         .replaceAll("/en/", "/zh/");
     } else if (langFormat === "en_GB") {
       src = src
-        .replaceAll('"/home/', '"/en_GB/home/')
-        .replaceAll('"/product?', '"/en_GB/product?')
-        .replaceAll('"/search?', '"/en_GB/search?')
+        .replaceAll('/home/', '/en_GB/home/')
+        .replaceAll('/product?', '/en_GB/product?')
+        .replaceAll('/search?', '/en_GB/search?')
         .replaceAll("/zh/", "/en/");
     }
 
