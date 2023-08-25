@@ -13,7 +13,7 @@ const UQTWLinkConverter = () => {
       .replaceAll("${fileServer}${pcPath}/", "https://m.uniqlo.com/tw/home/")
       .replaceAll("https://www.uniqlo.com/tw/zh_TW/", "https://m.uniqlo.com/tw/home/")
       .replaceAll(".html", "")
-      .replaceAll("https://www.uniqlo.com/tw/zh_TW/stylingbook/stylehint/men", "https://m.uniqlo.com/tw/zh_TW/stylingbook/stylehint/men")
+      .replaceAll("/home/stylingbook/stylehint/men", "/zh_TW/stylingbook/stylehint/men")
     return src;
   };
 
