@@ -7,13 +7,28 @@ const UQTWLinkConverter = () => {
   const [content, setContent] = useState("");
   const convert = (src: string) => {
     src = src
-      .replaceAll("https://www.uniqlo.com/tw/zh_TW/search.html?description=", "https://m.uniqlo.com/tw/search?description=")
-      .replaceAll("https://www.uniqlo.com/tw/zh_TW/product-detail.html?productCode=", 'https://m.uniqlo.com/tw/product?pid=')
-      .replaceAll("https://www.uniqlo.com/tw/zh_TW/c/", "https://m.uniqlo.com/tw/home/c_mobile/")
+      .replaceAll(
+        "https://www.uniqlo.com/tw/zh_TW/search.html?description=",
+        "https://m.uniqlo.com/tw/search?description="
+      )
+      .replaceAll(
+        "https://www.uniqlo.com/tw/zh_TW/product-detail.html?productCode=",
+        "https://m.uniqlo.com/tw/product?pid="
+      )
+      .replaceAll(
+        "https://www.uniqlo.com/tw/zh_TW/c/",
+        "https://m.uniqlo.com/tw/home/c_mobile/"
+      )
       .replaceAll("${fileServer}${pcPath}/", "https://m.uniqlo.com/tw/home/")
-      .replaceAll("https://www.uniqlo.com/tw/zh_TW/", "https://m.uniqlo.com/tw/home/")
+      .replaceAll(
+        "https://www.uniqlo.com/tw/zh_TW/",
+        "https://m.uniqlo.com/tw/home/"
+      )
       .replaceAll(".html", "")
-      .replaceAll("/home/stylingbook/stylehint/men", "/zh_TW/stylingbook/stylehint/men")
+      .replaceAll(
+        "/home/stylingbook/stylehint/men",
+        "/zh_TW/stylingbook/stylehint/men"
+      );
     return src;
   };
 
@@ -45,14 +60,23 @@ const UQTWLinkConverter = () => {
         <div className="flex">
           <button
             className="btn py-4 px-12 block disabled:cursor-not-allowed disabled:opacity-75 mr-3"
-            onClick={() => copyHandler(convertedValue,setContent.bind(null, "") )}
+            onClick={() =>
+              copyHandler(convertedValue, setContent.bind(null, ""))
+            }
             disabled={!content}
           >
             Copy
           </button>
           <button
             className="btn py-4 px-12 block disabled:cursor-not-allowed disabled:opacity-75 mr-3"
-            onClick={() => outputHandler(convertedValue, title, setContent.bind(null, ""))}
+            onClick={() =>
+              outputHandler(
+                convertedValue,
+                title,
+                "html",
+                setContent.bind(null, "")
+              )
+            }
             disabled={!content}
           >
             Output
