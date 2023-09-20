@@ -28,7 +28,17 @@ const AppLinkConverter = () => {
       const value = val as Record<string, string | number>;
       if ("URL" in value && typeof value.URL === "string") {
         const url = value.URL;
-        value.URL = url.replace("https://m.uniqlo.com/tw/home/", "/wechat/");
+        value.URL = url
+          .replace(
+            "https://m.uniqlo.com/tw/home/c_mobile/",
+            "/wechat/c_wechat/"
+          )
+          .replace(
+            /https:\/\/m.uniqlo.com\/tw\/home\/live-commerce(\d{1,})/,
+            "https://www.uniqlo.com/tw/zh_TW/live-commerce$1.html"
+          )
+          .replace(/https:\/\/m.uniqlo.com\/tw(\/product\?pid=u\d+)/, "$1")
+          .replace("https://m.uniqlo.com/tw/home/", "/wechat/");
       }
       return value;
     });
