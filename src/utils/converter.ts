@@ -14,20 +14,28 @@ export function outputHandler(
   extension: string,
   cb: () => void
 ) {
-  const textToSaveAsBlob = new Blob([convertedValue], { type: "text/plain" });
-  const textToSaveAsURL = URL.createObjectURL(textToSaveAsBlob);
-  const link = document.createElement("a");
-  link.href = textToSaveAsURL;
-  link.setAttribute("download", `${title || "file"}.${extension}`);
+  try {
+    const textToSaveAsBlob = new Blob([convertedValue], { type: "text/plain" });
+    const textToSaveAsURL = URL.createObjectURL(textToSaveAsBlob);
+    const link = document.createElement("a");
+    link.href = textToSaveAsURL;
+    link.setAttribute("download", `${title || "file"}.${extension}`);
 
-  // Append to html link element page
-  document.body.appendChild(link);
+    // Append to html link element page
+    document.body.appendChild(link);
 
-  // Start download
-  link.click();
+    // Start download
+    link.click();
 
-  // Clean up and remove the link
-  link.remove();
-  cb();
-  toast.success("Output Successfully!");
+    // Clean up and remove the link
+    link.remove();
+    cb();
+    toast.success("Output Successfully!");
+  } catch (error) {
+    if (error instanceof Error) {
+      toast.error(error.message);
+    } else {
+      toast.error("unknown Error");
+    }
+  }
 }

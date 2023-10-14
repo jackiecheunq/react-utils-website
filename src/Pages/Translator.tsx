@@ -57,15 +57,9 @@ const Translator = () => {
     setHtml("");
   };
   const onOutputHandler = () => {
-    try {
-      outputHandler(convertedValue, "result", "html", () => {
-        clearAllFiles();
-      });
-    } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message);
-      }
-    }
+    outputHandler(convertedValue, "result", "html", () => {
+      clearAllFiles();
+    });
   };
 
   return (
