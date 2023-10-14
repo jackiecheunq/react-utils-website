@@ -6,6 +6,7 @@ import Xlsx from "./Pages/Xlsx";
 import H5LinkConverter from "./Pages/H5LinkConverter";
 import UQTWLinkConverter from "./Pages/UQTWLinkConverter";
 import AppLinkConverter from "./Pages/AppLinkConverter";
+import TransDataExtractor from "./Pages/TransDataExtractor";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { initalizeAnalytics, trackPageView } from "./utils/analytics";
@@ -40,6 +41,7 @@ function App() {
         <Route path="/h5Link" element={<H5LinkConverter />} />
         <Route path="/uqtwh5Link" element={<UQTWLinkConverter />} />
         <Route path="/appLink" element={<AppLinkConverter />} />
+        <Route path="/transdata_extractor" element={<TransDataExtractor />} />
       </Routes>
       <Footer />
       <ToastContainer />
