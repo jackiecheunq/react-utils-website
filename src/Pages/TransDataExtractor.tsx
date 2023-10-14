@@ -1,26 +1,12 @@
 import { useState, useMemo } from "react";
 import BasicOutput from "../Components/BasicOutput";
 import { toast } from "react-toastify";
+import { getDirectText } from "@/utils/htmlUtils";
+import { removeRepeat } from "@/utils/utils";
 
 const TransDataExtractor = () => {
   const [title, setTitle] = useState("transData");
   const [content, setContent] = useState("");
-
-  function getDirectText(parentElement: Element) {
-    const elChildNode = parentElement.childNodes;
-    let result = "";
-    elChildNode.forEach(function (value) {
-      if (value.nodeValue && value.nodeType === Node.TEXT_NODE) {
-        result += value.nodeValue.replace(/[\n]/g, "").trim();
-      }
-    });
-    return result;
-  }
-
-  function removeRepeat(arr: Array<string>) {
-    const set = new Set(arr);
-    return Array.from(set);
-  }
 
   function generateDict(arr: Array<string>) {
     const dict: Record<string, string> = {};
@@ -37,6 +23,13 @@ const TransDataExtractor = () => {
       const regexOfChi = /[\u4E00-\u9FFF]/;
       const res: Array<string> = [];
       container.querySelectorAll("*").forEach((el) => {
+        if (el.nodeName === "IMG") {
+          const alt = el.getAttribute("alt");
+          if (alt && regexOfChi.test(alt)) {
+            res.push(alt);
+          }
+          return;
+        }
         const text = getDirectText(el);
         if (typeof text === "string" && regexOfChi.test(text)) {
           res.push(text);

@@ -7,6 +7,7 @@ import H5LinkConverter from "./Pages/H5LinkConverter";
 import UQTWLinkConverter from "./Pages/UQTWLinkConverter";
 import AppLinkConverter from "./Pages/AppLinkConverter";
 import TransDataExtractor from "./Pages/TransDataExtractor";
+import Translator from "./Pages/Translator";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { initalizeAnalytics, trackPageView } from "./utils/analytics";
@@ -42,6 +43,7 @@ function App() {
         <Route path="/uqtwh5Link" element={<UQTWLinkConverter />} />
         <Route path="/appLink" element={<AppLinkConverter />} />
         <Route path="/transdata_extractor" element={<TransDataExtractor />} />
+        <Route path="/translator" element={<Translator />} />
       </Routes>
       <Footer />
       <ToastContainer />

@@ -1,5 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import faFileLine from "@/assets/file-lines-solid.svg";
+import faExcel from "@/assets/file-excel-solid.svg";
+import faLang from "@/assets/language-solid.svg";
 
 const Footer: React.FC = () => {
   return (
@@ -11,31 +14,20 @@ const Footer: React.FC = () => {
             <span> • All right reserved.</span>
           </li>
         </ul>
-        <div className="flex">
-          <Link to="appLink" className="mr-6">
-            <svg
-              width="16px"
-              height="16px"
-              viewBox="0 0 384 512"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <title>applink_converter</title>
-              <path d="M64 0C28.7 0 0 28.7 0 64V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V160H256c-17.7 0-32-14.3-32-32V0H64zM256 0V128H384L256 0zM155.7 250.2L192 302.1l36.3-51.9c7.6-10.9 22.6-13.5 33.4-5.9s13.5 22.6 5.9 33.4L221.3 344l46.4 66.2c7.6 10.9 5 25.8-5.9 33.4s-25.8 5-33.4-5.9L192 385.8l-36.3 51.9c-7.6 10.9-22.6 13.5-33.4 5.9s-13.5-22.6-5.9-33.4L162.7 344l-46.4-66.2c-7.6-10.9-5-25.8 5.9-33.4s25.8-5 33.4 5.9z" />
-            </svg>
+        <div className="flex gap-x-4">
+          <Link to="appLink" title="appLink">
+            <img src={faExcel} alt="applink" height={16} width={16} />
           </Link>
-          <Link to="ejs">
-            <svg
-              width="16px"
-              height="16px"
-              viewBox="0 0 32 32"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <title>file_type_ejs</title>
-              <path
-                d="M2,17.672V14.328l11.86-6.2V11.2L5.1,15.939l8.762,4.835v3.1Zm27.814-8.88L19.465,23.229H15.912L26.281,8.791ZM26.947,21.5a.794.794,0,0,0,.619-.278,1.061,1.061,0,0,0,.248-.732,1.141,1.141,0,0,0-.248-.753.768.768,0,0,0-1.217,0,1.141,1.141,0,0,0-.248.753,1.09,1.09,0,0,0,.237.732A.763.763,0,0,0,26.947,21.5Zm2.186,1.042a3.237,3.237,0,0,1-4.352-.01,2.864,2.864,0,0,1,0-4.1,3.223,3.223,0,0,1,4.352,0A2.773,2.773,0,0,1,30,20.486,2.74,2.74,0,0,1,29.134,22.538ZM18.821,13.061a.794.794,0,0,0,.619-.278,1.061,1.061,0,0,0,.248-.732,1.141,1.141,0,0,0-.248-.753.769.769,0,0,0-1.217,0,1.141,1.141,0,0,0-.248.753,1.09,1.09,0,0,0,.237.732A.763.763,0,0,0,18.821,13.061ZM21.007,14.1a3.237,3.237,0,0,1-4.352-.01,2.864,2.864,0,0,1,0-4.1,3.223,3.223,0,0,1,4.352,0,2.773,2.773,0,0,1,.866,2.063A2.74,2.74,0,0,1,21.007,14.1Z"
-                style={{ fill: "#90a93a" }}
-              />
-            </svg>
+          <Link to="transdata_extractor" title="transdata_extractor">
+            <img
+              src={faFileLine}
+              alt="transdata_extractor"
+              height={16}
+              width={16}
+            />
+          </Link>
+          <Link to="translator" title="translator">
+            <img src={faLang} alt="translator" height={16} width={30} />
           </Link>
         </div>
       </div>
