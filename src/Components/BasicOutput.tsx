@@ -101,7 +101,7 @@ const BasicOutput: React.FC<{ input: inputType }> = (props) => {
       <div className="flex">
         <button
           className="btn py-4 px-12 block disabled:cursor-not-allowed disabled:opacity-75 mr-3"
-          onClick={() => copyHandler(convertedValue, setContent.bind(null, ""))}
+          onClick={() => copyHandler(convertedValue, clearAllFiles)}
           disabled={!content}
         >
           Copy
@@ -109,12 +109,7 @@ const BasicOutput: React.FC<{ input: inputType }> = (props) => {
         <button
           className="btn py-4 px-12 block disabled:cursor-not-allowed disabled:opacity-75 mr-3"
           onClick={() =>
-            outputHandler(
-              convertedValue,
-              title,
-              extentsion,
-              setContent.bind(null, "")
-            )
+            outputHandler(convertedValue, title, extentsion, clearAllFiles)
           }
           disabled={!content}
         >
