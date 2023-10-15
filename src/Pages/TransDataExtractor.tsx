@@ -22,7 +22,7 @@ const TransDataExtractor = () => {
       container.innerHTML = src;
       const regexOfChi = /[\u4E00-\u9FFF]/;
       const res: Array<string> = [];
-      container.querySelectorAll("*").forEach((el) => {
+      container.querySelectorAll("*:not(script,style)").forEach((el) => {
         if (el.nodeName === "IMG") {
           const alt = el.getAttribute("alt");
           if (alt && regexOfChi.test(alt)) {
