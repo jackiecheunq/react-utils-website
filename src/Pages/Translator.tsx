@@ -2,7 +2,7 @@ import { useState, useRef, useMemo } from "react";
 import { toast } from "react-toastify";
 import { outputHandler } from "@/utils/converter";
 import textFileOnChangeHandler from "@/utils/fileHandler";
-import { getDirectText } from "@/utils/htmlUtils";
+import { getDirectText, replaceDirectText } from "@/utils/htmlUtils";
 
 const Translator = () => {
   const [html, setHtml] = useState("");
@@ -29,7 +29,7 @@ const Translator = () => {
             }
             const text = getDirectText(el);
             if (text === textForSearch) {
-              el.textContent = transData[textForSearch];
+              replaceDirectText(el, transData[textForSearch]);
             }
           });
         }
