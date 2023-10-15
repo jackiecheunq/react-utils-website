@@ -12,7 +12,7 @@ export function getDirectText(parentElement: Element) {
       }
       result =
         result +
-        ";".repeat(textNodeNumber) +
+        (textNodeNumber > 0 ? ";" : "") +
         node.nodeValue.replace(/[\n]/g, "").trim();
       textNodeNumber++;
     }
