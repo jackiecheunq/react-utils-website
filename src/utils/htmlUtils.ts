@@ -13,11 +13,6 @@ export function getDirectText(parentElement: Element) {
 
   elChildNode.forEach(function (node) {
     if (isValidTextNode(node)) {
-      if (node.nodeValue!.includes(";")) {
-        throw Error(
-          "';' detected in textContent. Please remove it before extracting."
-        );
-      }
       result =
         result +
         (textNodeNumber > 0 ? ";" : "") +
