@@ -18,7 +18,7 @@ const Translator = () => {
         const container = document.createElement("div");
         container.innerHTML = html;
         for (let index = 0; index < keys.length; index++) {
-          container.querySelectorAll("*").forEach((el) => {
+          container.querySelectorAll("*:not(script,style)").forEach((el) => {
             const textForSearch = keys[index];
             if (
               el.nodeName === "IMG" &&
