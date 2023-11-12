@@ -11,7 +11,7 @@ const H5LinkConverter = () => {
   const convert = (src: string) => {
     const relativePathReplacer = "${fileServer}${pcPath}/";
     const htmlReplacer =
-      /(?<!https:\/\/www.uniqlo.com.hk\/public\/[^\s]+index)\.html/g;
+      /(?<!https:\/\/www.uniqlo.com.hk\/public\/[^\s]+)\.html/g;
     src = src
       .replaceAll(relativePathReplacer, "/home/")
       .replaceAll(htmlReplacer, "")
