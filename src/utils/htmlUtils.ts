@@ -1,4 +1,4 @@
-
+const splitSymbol = "@";
 
 function isValidTextNode(node: Node) {
   return node.nodeValue &&
@@ -15,14 +15,15 @@ export function getDirectText(parentElement: Element) {
 
   elChildNode.forEach(function (node) {
     if (isValidTextNode(node)) {
-      if (node.nodeValue!.includes(";")) {
+      if (node.nodeValue!.includes(splitSymbol)) {
         throw Error(
-          "';' detected in textContent. Please remove it before extracting."
+          splitSymbol +
+            " detected in textContent. Please remove it before extracting."
         );
       }
       result =
         result +
-        (textNodeNumber > 0 ? ";" : "") +
+        (textNodeNumber > 0 ? splitSymbol : "") +
         node.nodeValue!.replace(/[\n]/g, "").trim();
       textNodeNumber++;
     }
@@ -33,7 +34,7 @@ export function getDirectText(parentElement: Element) {
 
 export function replaceDirectText(parentElement: Element, text: string) {
   const elChildNode = parentElement.childNodes;
-  const textArr = text.split(";");
+  const textArr = text.split(splitSymbol);
   let textNodeNumber = 0;
   elChildNode.forEach(function (node) {
     if (isValidTextNode(node)) {
