@@ -26,9 +26,13 @@ const UQTWLinkConverter = () => {
       )
       .replaceAll(".html", "")
       .replaceAll(
-        "/home/stylingbook/stylehint/men",
-        "/zh_TW/stylingbook/stylehint/men"
-      );
+        "/home/stylingbook/",
+        "/zh_TW/stylingbook/"
+      ).replaceAll(
+        "/home/staff-styling-detail",
+        "/staff-styling-detail"
+      )
+      ;
     return src;
   };
 
