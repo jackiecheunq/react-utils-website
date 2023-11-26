@@ -12,6 +12,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { initalizeAnalytics, trackPageView } from "./utils/analytics";
 import { useEffect } from "react";
+import UqtwL1Checker from "./Pages/UqtwL1Checker";
 
 const link = {
   "/": "Home",
@@ -44,6 +45,7 @@ function App() {
         <Route path="/appLink" element={<AppLinkConverter />} />
         <Route path="/transdata_extractor" element={<TransDataExtractor />} />
         <Route path="/translator" element={<Translator />} />
+        <Route path="/l1twchecker" element={<UqtwL1Checker />} />
       </Routes>
       <Footer />
       <ToastContainer />
