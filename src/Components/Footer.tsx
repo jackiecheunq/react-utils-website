@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import faFileLine from "@/assets/file-lines-solid.svg";
 import faExcel from "@/assets/file-excel-solid.svg";
 import faLang from "@/assets/language-solid.svg";
+import faChecker from "@/assets/check-to-slot-solid.svg";
 
 const Footer: React.FC = () => {
   return (
@@ -28,6 +29,9 @@ const Footer: React.FC = () => {
           </Link>
           <Link to="translator" title="translator">
             <img src={faLang} alt="translator" height={16} width={30} />
+          </Link>
+          <Link to="l1twchecker" title="l1twchecker">
+            <img src={faChecker} alt="l1twchecker" height={16} width={25} />
           </Link>
         </div>
       </div>
