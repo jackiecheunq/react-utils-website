@@ -10,7 +10,7 @@ import TransDataExtractor from "./Pages/TransDataExtractor";
 import Translator from "./Pages/Translator";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { initalizeAnalytics, trackPageView } from "./utils/analytics";
+import { initalizeAnalytics } from "./utils/analytics";
 import { useEffect } from "react";
 import UqtwL1Checker from "./Pages/UqtwL1Checker";
 
@@ -22,16 +22,9 @@ const link = {
 };
 
 function App() {
-  const location = useLocation();
-
   useEffect(() => {
     initalizeAnalytics();
   }, []);
-
-  useEffect(() => {
-    // work for github page
-    trackPageView(location.hash);
-  }, [location]);
 
   return (
     <div className="flex flex-col h-screen px-36 min-w-[128rem]">
