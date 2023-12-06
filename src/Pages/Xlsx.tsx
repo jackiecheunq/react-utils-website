@@ -73,7 +73,7 @@ const Xlsx = () => {
             }
           });
         } else {
-          if (src.length > 0 && src.every((i) => typeof i === "string")) {
+          if (src.length > 0) {
             xlsxOupput(src as string[]);
           }
         }
