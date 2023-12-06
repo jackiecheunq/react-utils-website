@@ -1,6 +1,6 @@
 import NavBar from "./Components/NavBar";
 import Footer from "./Components/Footer";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import HomePage from "./Pages/HomePage";
 import Xlsx from "./Pages/Xlsx";
 import H5LinkConverter from "./Pages/H5LinkConverter";
@@ -10,7 +10,7 @@ import TransDataExtractor from "./Pages/TransDataExtractor";
 import Translator from "./Pages/Translator";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { initalizeAnalytics } from "./utils/analytics";
+import { initalizeAnalytics, trackPageView } from "./utils/analytics";
 import { useEffect } from "react";
 import UqtwL1Checker from "./Pages/UqtwL1Checker";
 
@@ -22,9 +22,15 @@ const link = {
 };
 
 function App() {
+  const location = useLocation();
+
   useEffect(() => {
     initalizeAnalytics();
   }, []);
+
+  useEffect(() => {
+    trackPageView(location.pathname);
+  }, [location]);
 
   return (
     <div className="flex flex-col h-screen px-36 min-w-[128rem]">
