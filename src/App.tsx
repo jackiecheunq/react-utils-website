@@ -29,7 +29,8 @@ function App() {
   }, []);
 
   useEffect(() => {
-    trackPageView(location.pathname);
+    // work for github page
+    trackPageView(location.hash);
   }, [location]);
 
   return (
