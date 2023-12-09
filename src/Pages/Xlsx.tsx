@@ -66,7 +66,7 @@ const Xlsx = () => {
         const propsObj = {};
         Object.defineProperty(propsObj, "Application", {
           get: function () {
-            return "Mircosoft Excel";
+            return "Microsoft Excel";
           },
           set: function (_value) {
             return this;
