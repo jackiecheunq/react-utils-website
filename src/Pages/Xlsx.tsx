@@ -75,11 +75,11 @@ const Xlsx = () => {
         if (!workBook.Props) {
           workBook.Props = propsObj;
         }
-        workBook.Props.Title = "";
-        workBook.Props.Subject = "";
+        workBook.Props.Title = title;
+        workBook.Props.Subject = title;
         workBook.Props.Author = "Jacky Cheung";
-        workBook.Props.Keywords = "";
-        workBook.Props.Comments = "";
+        workBook.Props.Keywords = title;
+        workBook.Props.Comments = title;
         workBook.Props.LastAuthor = "Jacky Cheung";
         workBook.Props.AppVersion = "14.0300";
         workBook.Props.DocSecurity = "0";
