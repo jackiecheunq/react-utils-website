@@ -1,4 +1,4 @@
-import { utils, writeFileXLSX } from "xlsx";
+import { utils, writeFile} from "xlsx";
 import { useMemo, useState } from "react";
 import Input from "../Components/Input";
 import { toast } from "react-toastify";
@@ -63,27 +63,7 @@ const Xlsx = () => {
         const workBook = utils.book_new();
         const workSheet = utils.aoa_to_sheet([[], ...src.map((id) => [id])]);
         utils.book_append_sheet(workBook, workSheet, title || "id");
-        const propsObj = {};
-        // Object.defineProperty(propsObj, "Application", {
-        //   get: function () {
-        //     return "Microsoft Excel";
-        //   },
-        //   set: function (_value) {
-        //     return this;
-        //   },
-        // });
-        if (!workBook.Props) {
-          workBook.Props = propsObj;
-        }
-        workBook.Props.Title = title;
-        workBook.Props.Subject = title;
-        workBook.Props.Author = "Jacky Cheung";
-        workBook.Props.Keywords = title;
-        workBook.Props.Comments = title;
-        workBook.Props.LastAuthor = "Jacky Cheung";
-        workBook.Props.AppVersion = "14.0300";
-        workBook.Props.DocSecurity = "0";
-        writeFileXLSX(workBook, (title || "id") + ".xlsx");
+        writeFile(workBook, (title || "id") + ".xls");
       };
       if (Array.isArray(src)) {
         if (isSplitModeEnable) {
