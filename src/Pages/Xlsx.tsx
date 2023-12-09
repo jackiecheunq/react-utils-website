@@ -63,6 +63,16 @@ const Xlsx = () => {
         const workBook = utils.book_new();
         const workSheet = utils.aoa_to_sheet([[], ...src.map((id) => [id])]);
         utils.book_append_sheet(workBook, workSheet, title || "id");
+        const propsObj = {};
+        Object.defineProperty(propsObj, "Application", {
+          get: function () {
+            return "Mircosoft Excel";
+          },
+          set: function (_value) {
+            return this;
+          },
+        });
+        workBook.Props = propsObj;
         writeFileXLSX(workBook, (title || "id") + ".xlsx");
       };
       if (Array.isArray(src)) {
