@@ -64,15 +64,25 @@ const Xlsx = () => {
         const workSheet = utils.aoa_to_sheet([[], ...src.map((id) => [id])]);
         utils.book_append_sheet(workBook, workSheet, title || "id");
         const propsObj = {};
-        Object.defineProperty(propsObj, "Application", {
-          get: function () {
-            return "Microsoft Excel";
-          },
-          set: function (_value) {
-            return this;
-          },
-        });
-        workBook.Props = propsObj;
+        // Object.defineProperty(propsObj, "Application", {
+        //   get: function () {
+        //     return "Microsoft Excel";
+        //   },
+        //   set: function (_value) {
+        //     return this;
+        //   },
+        // });
+        if (!workBook.Props) {
+          workBook.Props = propsObj;
+        }
+        workBook.Props.Title = "";
+        workBook.Props.Subject = "";
+        workBook.Props.Author = "Jacky Cheung";
+        workBook.Props.Keywords = "";
+        workBook.Props.Comments = "";
+        workBook.Props.LastAuthor = "Jacky Cheung";
+        workBook.Props.AppVersion = "14.0300";
+        workBook.Props.DocSecurity = "0";
         writeFileXLSX(workBook, (title || "id") + ".xlsx");
       };
       if (Array.isArray(src)) {
