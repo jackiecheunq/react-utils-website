@@ -10,7 +10,7 @@ const Footer: React.FC = () => {
     <footer className="h-30 w-full py-10 shrink-0 text-3xl text-neutral-500">
       <div className="flex justify-between items-center h-full">
         <ul className="flex [&>*]:mr-4">
-          <li>Github @jackiecheunq 2023</li>
+          <li>Jacky Cheung 2023</li>
           <li>
             <span> • All right reserved.</span>
           </li>
