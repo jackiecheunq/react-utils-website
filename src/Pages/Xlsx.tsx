@@ -1,7 +1,8 @@
-import { utils, writeFile} from "xlsx";
+import { utils, writeFile } from "xlsx";
 import { useMemo, useState } from "react";
 import Input from "../Components/Input";
 import { toast } from "react-toastify";
+import { isChristmas } from "@/utils/utils";
 
 const Xlsx = () => {
   const [title, setTitle] = useState("id");
@@ -80,7 +81,11 @@ const Xlsx = () => {
       }
 
       setContent("");
-      toast.success("Success!");
+      if (isChristmas()) {
+        toast.success("Merry Christmas!");
+      } else {
+        toast.success("Success!");
+      }
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);
