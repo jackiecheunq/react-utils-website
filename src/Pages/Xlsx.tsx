@@ -73,7 +73,7 @@ const Xlsx = () => {
       for (let index = 0; index < splitedString.length; index++) {
         const ids = splitedString[index].match(regex);
         const res = filterAndAdjust(ids);
-        if (res) {
+        if (res && res.length > 0) {
           result.push([...new Set(res)]);
         }
       }
