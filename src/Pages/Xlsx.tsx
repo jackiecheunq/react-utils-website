@@ -2,7 +2,7 @@ import { utils, writeFile } from "xlsx";
 import { useMemo, useState } from "react";
 import Input from "../Components/Input";
 import { toast } from "react-toastify";
-import { isChristmas } from "@/utils/utils";
+import { getEasterEgg } from "@/utils/utils";
 
 const Xlsx = () => {
   const [title, setTitle] = useState("id");
@@ -81,8 +81,11 @@ const Xlsx = () => {
       }
 
       setContent("");
-      if (isChristmas()) {
-        toast.success("Merry Christmas!");
+      const icon = getEasterEgg();
+      if (icon) {
+        toast.success("Success!", {
+          icon: icon,
+        });
       } else {
         toast.success("Success!");
       }

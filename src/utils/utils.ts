@@ -3,8 +3,17 @@ export function removeRepeat(arr: Array<string>) {
   return Array.from(set);
 }
 
-export function isChristmas() {
+const festivalEasterEggs: Record<string, string> = {
+  "12,25": "🎄",
+  "12,27": "🎂",
+  "1,1": "🎊",
+};
+export function getEasterEgg(): string {
   const today = new Date();
-  const isChristmas = today.getMonth() === 11 && today.getDate() === 25;
-  return isChristmas;
+  const date = `${today.getMonth() + 1},${today.getDate()}`;
+  console.log(date);
+  if (date in festivalEasterEggs) {
+    return festivalEasterEggs[date];
+  }
+  return "";
 }
