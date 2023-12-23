@@ -3,6 +3,8 @@ import { useMemo, useState } from "react";
 import Input from "../Components/Input";
 import { toast } from "react-toastify";
 import { getEasterEgg } from "@/utils/utils";
+import { Steps } from "intro.js-react";
+import "intro.js/introjs.css";
 
 const Xlsx = () => {
   const [title, setTitle] = useState("id");
@@ -11,6 +13,44 @@ const Xlsx = () => {
     useState<number>(0);
   const [isSplitModeEnable, setIsSplitModeEnable] = useState(true);
   const separator = "@";
+  const [isIntroEnabled, setIsIntroEnabled] = useState(false);
+
+  const onExit = () => {
+    setIsIntroEnabled(false);
+  };
+
+  const steps = [
+    {
+      title: "Welcome!",
+      intro: "歡迎來到教程👋",
+    },
+    {
+      element: "#title_input",
+      intro: "你可以在這裡輸入「輸出文件」的標題",
+      position: "right",
+    },
+    {
+      element: "#content_input",
+      intro: "在這裡貼上一段包括6位或9位數字的文字",
+    },
+    {
+      element: "#split_setting",
+      intro: `設定分割模式，可使用分隔符號${separator}來分開多段文字並分別輸出多個「輸出文件」`,
+    },
+    {
+      element: "#filter_setting",
+      intro:
+        "設定過濾模式，可選擇只識別6位數字或只識別9位數字（預設模式為同時識別6位或9位數字）",
+    },
+    {
+      element: "#total_number",
+      intro: "顯示識別到的數字總數",
+    },
+    {
+      element: "#result_list",
+      intro: "顯示識別到的所有數字",
+    },
+  ];
 
   const convert = (
     src: string,
@@ -97,124 +137,149 @@ const Xlsx = () => {
   };
 
   return (
-    <div className="w-full bg-slate-100 p-32 flex flex-col justify-center items-center [&>*]:mb-20">
-      <h1 className="mb-3 font-bold text-4xl">String to xlsx</h1>
-      <div className="flex flex-col items-center [&>*]:mb-3">
-        <Input
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setTitle(e.target.value)
-          }
-          placeholder="title"
-          value={title}
-        />
-        <textarea
-          rows={4}
-          cols={50}
-          className="input"
-          placeholder="source string"
-          onChange={(event) => {
-            setContent(event.target.value);
-          }}
-          value={content}
-        />
-        <div className="flex [&>*]:mr-6">
-          <div
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setIsSplitModeEnable(event.target.checked);
+    <>
+      <Steps
+        enabled={isIntroEnabled}
+        steps={steps}
+        initialStep={0}
+        onExit={onExit}
+        options={{
+          nextLabel: "下一步",
+          prevLabel: "上一步",
+          doneLabel: "Thank you, Jacky!",
+        }}
+      />
+      <div className="w-full bg-slate-100 p-32 flex flex-col justify-center items-center [&>*]:mb-20">
+        <h1 className="mb-3 font-bold text-4xl">String to xlsx</h1>
+        <div className="flex flex-col items-center [&>*]:mb-3">
+          <Input
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setTitle(e.target.value)
+            }
+            placeholder="title"
+            value={title}
+            id="title_input"
+          />
+          <textarea
+            rows={4}
+            cols={50}
+            className="input"
+            id="content_input"
+            placeholder="source string"
+            onChange={(event) => {
+              setContent(event.target.value);
             }}
-            className="border p-3 border-black"
-          >
-            <legend>
-              Enable <span className="font-bold">Split</span> Mode: <br />
-              (Separator: @)
-            </legend>
+            value={content}
+          />
+          <div className="flex [&>*]:mr-6">
+            <div
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setIsSplitModeEnable(event.target.checked);
+              }}
+              className="border p-3 border-black"
+              id="split_setting"
+            >
+              <legend>
+                Enable <span className="font-bold">Split</span> Mode: <br />(
+                {`Separator: ${separator}`})
+              </legend>
 
-            <div>
-              <input
-                type="checkbox"
-                id="splitModeEnableCheckbox"
-                name="splitModeEnableCheckbox"
-                checked={isSplitModeEnable}
-                readOnly
-              />
-              <label htmlFor="splitModeEnableCheckbox"> Enable</label>
+              <div>
+                <input
+                  type="checkbox"
+                  id="splitModeEnableCheckbox"
+                  name="splitModeEnableCheckbox"
+                  checked={isSplitModeEnable}
+                  readOnly
+                />
+                <label htmlFor="splitModeEnableCheckbox"> Enable</label>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="flex [&>*]:mr-6">
-          <div
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setNumberLengthForFiltering(+event.target.value);
-            }}
-            className="border p-3 border-black"
-          >
-            <legend>
-              Select a <span className="font-bold">filter</span> Mode:{" "}
-            </legend>
+          <div className="flex [&>*]:mr-6">
+            <div
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setNumberLengthForFiltering(+event.target.value);
+              }}
+              className="border p-3 border-black"
+              id="filter_setting"
+            >
+              <legend>
+                Select a <span className="font-bold">filter</span> Mode:{" "}
+              </legend>
 
-            <div>
-              <input
-                type="radio"
-                id="default"
-                name="numberLengthForFiltering"
-                value={0}
-                checked={numberLengthForFiltering === 0}
-                readOnly
-              />
-              <label htmlFor="default"> Default(6 or 9)</label>
-            </div>
+              <div>
+                <input
+                  type="radio"
+                  id="default"
+                  name="numberLengthForFiltering"
+                  value={0}
+                  checked={numberLengthForFiltering === 0}
+                  readOnly
+                />
+                <label htmlFor="default"> Default(6 or 9)</label>
+              </div>
 
-            <div>
-              <input
-                type="radio"
-                id="six"
-                name="numberLengthForFiltering"
-                value={6}
-                checked={numberLengthForFiltering === 6}
-                readOnly
-              />
-              <label htmlFor="six"> Six(6)</label>
-            </div>
-            <div>
-              <input
-                type="radio"
-                id="six"
-                name="numberLengthForFiltering"
-                value={9}
-                checked={numberLengthForFiltering === 9}
-                readOnly
-              />
-              <label htmlFor="six"> Nine(9)</label>
+              <div>
+                <input
+                  type="radio"
+                  id="six"
+                  name="numberLengthForFiltering"
+                  value={6}
+                  checked={numberLengthForFiltering === 6}
+                  readOnly
+                />
+                <label htmlFor="six"> Six(6)</label>
+              </div>
+              <div>
+                <input
+                  type="radio"
+                  id="six"
+                  name="numberLengthForFiltering"
+                  value={9}
+                  checked={numberLengthForFiltering === 9}
+                  readOnly
+                />
+                <label htmlFor="six"> Nine(9)</label>
+              </div>
             </div>
           </div>
+          <button
+            className="btn py-4 px-12 block disabled:cursor-not-allowed disabled:opacity-75"
+            onClick={ouputHandler}
+            disabled={!convertedValue || !(convertedValue?.flat().length > 0)}
+            id="submit_button"
+          >
+            Submit
+          </button>
+          <button
+            onClick={setIsIntroEnabled.bind(null, true)}
+            className="underline"
+          >
+            教程
+          </button>
         </div>
-        <button
-          className="btn py-4 px-12 block disabled:cursor-not-allowed disabled:opacity-75"
-          onClick={ouputHandler}
-          disabled={!convertedValue || !(convertedValue?.flat().length > 0)}
-        >
-          Submit
-        </button>
-      </div>
-      <div className="flex flex-col justify-center">
-        <h3 className="text-3xl font-bold">Result</h3>
-        <h3 className="text-3xl ">
-          Total Number:{" "}
-          <span className="font-bold text-red-600">
-            {convertedValue?.flat().length || 0}
-          </span>
-        </h3>
-        <div className="min-w-[80%]">
-          {isSplitModeEnable
-            ? convertedValue?.map((value, index) => (
-                <p key={`group${index}`}>
-                  Group {index}: {Array.isArray(value) ? value?.join(", ") : ""}
-                </p>
-              ))
-            : convertedValue?.join(", ") || ""}
+        <div className="flex flex-col justify-center">
+          <h3 className="text-3xl font-bold">Result</h3>
+          <h3 className="text-3xl" id="total_number">
+            Total Number:{" "}
+            <span className="font-bold text-red-600">
+              {convertedValue?.flat().length || 0}
+            </span>
+          </h3>
+          <div className="min-w-[80%]" id="result_list">
+            {isSplitModeEnable
+              ? convertedValue?.map((value, index) => (
+                  <p key={`group${index}`}>
+                    Group {index}:{" "}
+                    {Array.isArray(value) ? value?.join(", ") : ""}
+                  </p>
+                ))
+              : convertedValue?.join(", ") || ""}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
