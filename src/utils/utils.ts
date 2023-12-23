@@ -11,7 +11,6 @@ const festivalEasterEggs: Record<string, string> = {
 export function getEasterEgg(): string {
   const today = new Date();
   const date = `${today.getMonth() + 1},${today.getDate()}`;
-  console.log(date);
   if (date in festivalEasterEggs) {
     return festivalEasterEggs[date];
   }
