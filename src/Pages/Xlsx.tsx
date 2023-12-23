@@ -191,7 +191,7 @@ const Xlsx = () => {
         <button
           className="btn py-4 px-12 block disabled:cursor-not-allowed disabled:opacity-75"
           onClick={ouputHandler}
-          disabled={!convertedValue}
+          disabled={!convertedValue || !(convertedValue?.flat().length > 0)}
         >
           Submit
         </button>
