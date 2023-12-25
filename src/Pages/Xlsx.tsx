@@ -35,7 +35,7 @@ const Xlsx = () => {
     },
     {
       element: "#split_setting",
-      intro: `設定分割模式，可使用分隔符號${separator}來分開多段文字並分別輸出多個「輸出文件」`,
+      intro: `開啟或關閉「分割模式」。「分割模式」下可使用分隔符號「${separator}」來分開多段文字並分別輸出多個「輸出文件」`,
     },
     {
       element: "#filter_setting",
@@ -49,6 +49,10 @@ const Xlsx = () => {
     {
       element: "#result_list",
       intro: "顯示識別到的所有數字",
+    },
+    {
+      element: "#submit_button",
+      intro: "按此提交，下載將自動進行。同時右上角會出現成功提示",
     },
   ];
 
@@ -267,7 +271,7 @@ const Xlsx = () => {
               {convertedValue?.flat().length || 0}
             </span>
           </h3>
-          <div className="min-w-[80%]" id="result_list">
+          <div className="min-w-[80%] min-h-[16px]" id="result_list">
             {isSplitModeEnable
               ? convertedValue?.map((value, index) => (
                   <p key={`group${index}`}>
