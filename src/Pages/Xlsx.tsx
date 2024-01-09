@@ -246,6 +246,17 @@ const Xlsx = () => {
                 />
                 <label htmlFor="six"> Nine(9)</label>
               </div>
+              <div>
+                <input
+                  type="radio"
+                  id="fourteen"
+                  name="numberLengthForFiltering"
+                  value={14}
+                  checked={numberLengthForFiltering === 14}
+                  readOnly
+                />
+                <label htmlFor="fourteen"> Fourteen(14)</label>
+              </div>
             </div>
           </div>
           <button
