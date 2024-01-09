@@ -238,13 +238,13 @@ const Xlsx = () => {
               <div>
                 <input
                   type="radio"
-                  id="six"
+                  id="nine"
                   name="numberLengthForFiltering"
                   value={9}
                   checked={numberLengthForFiltering === 9}
                   readOnly
                 />
-                <label htmlFor="six"> Nine(9)</label>
+                <label htmlFor="nine"> Nine(9)</label>
               </div>
               <div>
                 <input
