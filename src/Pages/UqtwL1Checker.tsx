@@ -53,13 +53,17 @@ const UqtwL1Checker = () => {
           const bannerContainer = el.querySelector(
             "div[class^='media-banner-container']"
           );
-          const logoNumber = el.querySelectorAll(
+          const logos: NodeListOf<HTMLImageElement> = el.querySelectorAll(
             ".media-logo-container > img"
-          ).length;
+          );
+          const logoNumber = logos.length;
+          const logoNames = Array.from(logos).map((img) =>
+            img.src.split("/").pop()
+          );
           const isBannerPositionRight =
             logoNumber > 1
               ? bannerContainer?.className.endsWith("center") ||
-                bannerContainer?.className.endsWith("left")
+                bannerContainer?.className.endsWith("right")
               : true;
           let isPriceColorRight = true;
           if (priceEl && price) {
@@ -88,6 +92,7 @@ const UqtwL1Checker = () => {
             desc: replaceSpace(descEl?.textContent),
             price,
             originalPrice,
+            logoNames: logoNames.join(","),
             btn: replaceSpace(btnEl?.textContent),
             activity,
             copyright: replaceSpace(copyrightEl?.textContent),
