@@ -60,7 +60,7 @@ const TransDataExtractor = () => {
       }
     }
 
-    return src;
+    return "";
   };
 
   const input = {
