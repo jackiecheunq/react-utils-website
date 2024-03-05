@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import Input from "../Components/Input";
 import { copyHandler, outputHandler } from "../utils/converter";
 
@@ -25,20 +25,10 @@ const UQTWLinkConverter = () => {
         "https://m.uniqlo.com/tw/home/"
       )
       .replaceAll(".html", "")
-      .replaceAll(
-        "/home/stylingbook/",
-        "/zh_TW/stylingbook/"
-      ).replaceAll(
-        "/home/staff-styling-detail",
-        "/staff-styling-detail"
-      )
-      ;
+      .replaceAll("/home/stylingbook/", "/zh_TW/stylingbook/")
+      .replaceAll("/home/staff-styling-detail", "/staff-styling-detail");
     return src;
   };
-
-  const convertedValue = useMemo(() => {
-    return convert(content);
-  }, [content]);
 
   return (
     <div className="w-full bg-slate-100 p-32 flex flex-col justify-center items-center [&>*]:mb-20">
@@ -65,7 +55,7 @@ const UQTWLinkConverter = () => {
           <button
             className="btn py-4 px-12 block disabled:cursor-not-allowed disabled:opacity-75 mr-3"
             onClick={() =>
-              copyHandler(convertedValue, setContent.bind(null, ""))
+              copyHandler(convert(content), setContent.bind(null, ""))
             }
             disabled={!content}
           >
@@ -75,7 +65,7 @@ const UQTWLinkConverter = () => {
             className="btn py-4 px-12 block disabled:cursor-not-allowed disabled:opacity-75 mr-3"
             onClick={() =>
               outputHandler(
-                convertedValue,
+                convert(content),
                 title,
                 "html",
                 setContent.bind(null, "")

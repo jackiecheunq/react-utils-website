@@ -6,14 +6,14 @@ import textFileOnChangeHandler from "@/utils/fileHandler";
 type inputType = {
   title: string;
   content: string;
-  convertedValue: string;
+  convert: (text: string) => string;
   extentsion: string;
   setTitle: React.Dispatch<React.SetStateAction<string>>;
   setContent: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const BasicOutput: React.FC<{ input: inputType }> = (props) => {
-  const { title, content, convertedValue, extentsion, setTitle, setContent } =
+  const { title, content, convert, extentsion, setTitle, setContent } =
     props.input;
   const [inputFormat, setInputFormat] = useState("file");
   const fileUploadRef = useRef<HTMLInputElement>(null);
@@ -101,7 +101,7 @@ const BasicOutput: React.FC<{ input: inputType }> = (props) => {
       <div className="flex">
         <button
           className="btn py-4 px-12 block disabled:cursor-not-allowed disabled:opacity-75 mr-3"
-          onClick={() => copyHandler(convertedValue, clearAllFiles)}
+          onClick={() => copyHandler(convert(content), clearAllFiles)}
           disabled={!content}
         >
           Copy
@@ -109,7 +109,7 @@ const BasicOutput: React.FC<{ input: inputType }> = (props) => {
         <button
           className="btn py-4 px-12 block disabled:cursor-not-allowed disabled:opacity-75 mr-3"
           onClick={() =>
-            outputHandler(convertedValue, title, extentsion, clearAllFiles)
+            outputHandler(convert(content), title, extentsion, clearAllFiles)
           }
           disabled={!content}
         >

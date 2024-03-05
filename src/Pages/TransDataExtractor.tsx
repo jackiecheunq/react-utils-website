@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef } from "react";
+import { useState, useRef } from "react";
 import BasicOutput from "../Components/BasicOutput";
 import { toast } from "react-toastify";
 import { getDirectText } from "@/utils/htmlUtils";
@@ -27,7 +27,7 @@ const TransDataExtractor = () => {
     return dict;
   }
 
-  const convert = (src: string, existedData: string) => {
+  const convert = (existedData: string, src: string) => {
     try {
       const container = document.createElement("div");
       container.innerHTML = src;
@@ -62,14 +62,11 @@ const TransDataExtractor = () => {
 
     return src;
   };
-  const convertedValue = useMemo(() => {
-    return convert(content, existedData);
-  }, [content, existedData]);
 
   const input = {
     title,
     content,
-    convertedValue,
+    convert: convert.bind(null, existedData),
     setTitle,
     setContent,
     extentsion: "json",

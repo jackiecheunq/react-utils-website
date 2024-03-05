@@ -1,4 +1,4 @@
-import { useState, useRef, useMemo, Fragment } from "react";
+import { useState, useRef, Fragment } from "react";
 import { toast } from "react-toastify";
 import { outputHandler } from "@/utils/converter";
 import textFileOnChangeHandler from "@/utils/fileHandler";
@@ -63,10 +63,6 @@ const Translator = () => {
     return src;
   };
 
-  const convertedValue = useMemo(() => {
-    return convert(data);
-  }, [data]);
-
   const clearAllFiles = () => {
     if (htmlFileUploadRef.current) htmlFileUploadRef.current.value = "";
     if (jsonFileUploadRef.current) jsonFileUploadRef.current.value = "";
@@ -74,7 +70,7 @@ const Translator = () => {
     setHtml("");
   };
   const onOutputHandler = () => {
-    outputHandler(convertedValue, "result", "html", () => {
+    outputHandler(convert(data), "result", "html", () => {
       clearAllFiles();
     });
   };

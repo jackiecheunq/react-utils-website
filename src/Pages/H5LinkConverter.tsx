@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import Input from "../Components/Input";
 import { copyHandler, outputHandler } from "../utils/converter";
 
@@ -36,10 +36,6 @@ const H5LinkConverter = () => {
 
     return src;
   };
-
-  const convertedValue = useMemo(() => {
-    return convert(content);
-  }, [content, langFormat]);
 
   return (
     <div className="w-full bg-slate-100 p-32 flex flex-col justify-center items-center [&>*]:mb-20">
@@ -103,7 +99,7 @@ const H5LinkConverter = () => {
           <button
             className="btn py-4 px-12 block disabled:cursor-not-allowed disabled:opacity-75 mr-3"
             onClick={() =>
-              copyHandler(convertedValue, setContent.bind(null, ""))
+              copyHandler(convert(content), setContent.bind(null, ""))
             }
             disabled={!content}
           >
@@ -113,7 +109,7 @@ const H5LinkConverter = () => {
             className="btn py-4 px-12 block disabled:cursor-not-allowed disabled:opacity-75 mr-3"
             onClick={() =>
               outputHandler(
-                convertedValue,
+                convert(content),
                 title,
                 "html",
                 setContent.bind(null, "")
